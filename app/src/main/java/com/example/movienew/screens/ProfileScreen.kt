@@ -15,18 +15,21 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavController
 import com.example.movienew.R
 
 @Composable
 fun ProfileScreen(navController: NavController) {
+    var isEditDialogOpen by remember { mutableStateOf(false) }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background) // Dynamic background color
+            .background(MaterialTheme.colorScheme.background)
             .padding(16.dp)
     ) {
-
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -38,10 +41,10 @@ fun ProfileScreen(navController: NavController) {
                 text = "PROFILE",
                 fontSize = 28.sp,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary // Dynamic primary color
+                color = MaterialTheme.colorScheme.primary
             )
 
-            IconButton(onClick  = { navController.navigate("editProfile") }) {
+            IconButton(onClick = { isEditDialogOpen = true }) {
                 Icon(
                     painter = painterResource(id = R.drawable.edit),
                     contentDescription = "Edit Profile",
@@ -49,8 +52,6 @@ fun ProfileScreen(navController: NavController) {
                     modifier = Modifier.size(30.dp)
                 )
             }
-
-
         }
 
         // Profile Picture
@@ -61,12 +62,12 @@ fun ProfileScreen(navController: NavController) {
             contentAlignment = Alignment.Center
         ) {
             Image(
-                painter = painterResource(id = R.drawable.profile_picture), // Profile image
+                painter = painterResource(id = R.drawable.profile_picture),
                 contentDescription = "Profile Picture",
                 modifier = Modifier
                     .size(100.dp)
                     .clip(CircleShape)
-                    .background(Color.LightGray) // Placeholder color for the image
+                    .background(Color.LightGray)
             )
         }
 
@@ -81,7 +82,7 @@ fun ProfileScreen(navController: NavController) {
                 text = "Username",
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onBackground // Dynamic text color
+                color = MaterialTheme.colorScheme.onBackground
             )
         }
 
@@ -89,8 +90,7 @@ fun ProfileScreen(navController: NavController) {
 
         // Profile Options
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
+            modifier = Modifier.fillMaxWidth()
         ) {
             ProfileOption(
                 icon = R.drawable.help,
@@ -115,9 +115,88 @@ fun ProfileScreen(navController: NavController) {
             )
         }
     }
+
+    if (isEditDialogOpen) {
+        Edit(onDismiss = { isEditDialogOpen = false })
+    }
 }
 
-// Reusable Option Item
+@Composable
+fun Edit(onDismiss: () -> Unit) {
+    Dialog(
+        onDismissRequest = { onDismiss() },
+        properties = DialogProperties(usePlatformDefaultWidth = false)
+    ) {
+        Surface(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.surface),
+            shape = MaterialTheme.shapes.medium
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.Start
+            ) {
+                IconButton(onClick = { onDismiss() }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.back_arrow),
+                        contentDescription = "Back to Profile",
+                        tint = MaterialTheme.colorScheme.onBackground,
+                        modifier = Modifier.size(30.dp)
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Text("Edit Profile", style = MaterialTheme.typography.headlineMedium)
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                var email by remember { mutableStateOf("") }
+                var username by remember { mutableStateOf("") }
+                var password by remember { mutableStateOf("") }
+
+                OutlinedTextField(
+                    value = email,
+                    onValueChange = { email = it },
+                    label = { Text("Email") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                OutlinedTextField(
+                    value = username,
+                    onValueChange = { username = it },
+                    label = { Text("Username") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                OutlinedTextField(
+                    value = password,
+                    onValueChange = { password = it },
+                    label = { Text("Password") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                Button(
+                    onClick = { onDismiss() },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("Save")
+                }
+            }
+        }
+    }
+}
+
 @Composable
 fun ProfileOption(icon: Int, title: String, onClick: () -> Unit) {
     Row(
@@ -130,19 +209,18 @@ fun ProfileOption(icon: Int, title: String, onClick: () -> Unit) {
         Icon(
             painter = painterResource(id = icon),
             contentDescription = title,
-            tint = MaterialTheme.colorScheme.onBackground, // Dynamic icon color
+            tint = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier.size(24.dp)
         )
         Spacer(modifier = Modifier.width(16.dp))
         Text(
             title,
             fontSize = 16.sp,
-            color = MaterialTheme.colorScheme.onBackground // Dynamic text color
+            color = MaterialTheme.colorScheme.onBackground
         )
     }
 }
 
-// Reusable Switch Item
 @Composable
 fun ProfileSwitch(icon: Int, title: String) {
     var isChecked by remember { mutableStateOf(false) }
@@ -156,14 +234,14 @@ fun ProfileSwitch(icon: Int, title: String) {
         Icon(
             painter = painterResource(id = icon),
             contentDescription = title,
-            tint = MaterialTheme.colorScheme.onBackground, // Dynamic icon color
+            tint = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier.size(24.dp)
         )
         Spacer(modifier = Modifier.width(16.dp))
         Text(
             title,
             fontSize = 16.sp,
-            color = MaterialTheme.colorScheme.onBackground // Dynamic text color
+            color = MaterialTheme.colorScheme.onBackground
         )
         Spacer(modifier = Modifier.weight(1f))
         Switch(
