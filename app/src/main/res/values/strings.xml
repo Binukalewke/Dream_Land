@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">MovieNew</string>
+
+    <!-- Movie Titles -->
+    <string name="movie_monterao">Monterao</string>
+    <string name="movie_hot_frosty">Hot Frosty</string>
+    <string name="movie_guardians_galaxy">Guardians of Galaxy</string>
+    <string name="movie_dark_knight">The Dark Knight</string>
+    <string name="movie_inception">Inception</string>
+    <string name="movie_interstellar">Interstellar</string>
+    <string name="movie_black_panther">Black Panther</string>
+    <string name="movie_avengers_endgame">Avengers: Endgame</string>
+    <string name="movie_Arena_Wars">Arena Wars</string>
+    <string name="movie_Dear_Santa">Dear Santa</string>
+
+
+    <!-- Anime Titles -->
+    <string name="anime_thedemonhunter">The Demon Hunter</string>
+    <string name="anime_amortalsjourney">A Mortals Journey</string>
+    <string name="anime_Tales_of_herding_gods">A Mortal’s Journey</string>
+    <string name="anime_Endless_God_Realm">Endless God Realm</string>
+    <string name="anime_Xian_Ni">Xian Ni</string>
+    <string name="anime_Jian_Lai">Jian Lai</string>
+    <string name="anime_Battle_of_Heavens">Battle Of Heavens</string>
+    <string name="anime_soulland">Soul Land</string>
+
+
+
+
+</resources>
