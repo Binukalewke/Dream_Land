@@ -20,10 +20,13 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -69,8 +72,7 @@ fun AppNavigation() {
         composable("editProfile") { EditProfileScreen(navController) }
 
         // Movie Details Screen
-        composable(
-            "movieDetails/{movieTitle}/{moviePoster}/{movieRating}/{movieDescription}",
+        composable("movieDetails/{movieTitle}/{moviePoster}/{movieRating}/{movieDescription}",
             arguments = listOf(
                 navArgument("movieTitle") { type = NavType.IntType },
                 navArgument("moviePoster") { type = NavType.IntType },
@@ -173,6 +175,7 @@ fun MovieCard(movie: Movie, navController: NavController) {
                     "movieDetails/${movie.titleResId}/${movie.posterResId}/${movie.rating}/${movie.descriptionResId}"
                 )
             }
+            .clip(MaterialTheme.shapes.medium)
     ) {
         Image(
             painter = painterResource(movie.posterResId),
@@ -180,20 +183,37 @@ fun MovieCard(movie: Movie, navController: NavController) {
             modifier = Modifier
                 .height(240.dp)
                 .fillMaxWidth()
+                .clip(MaterialTheme.shapes.medium)
         )
 
         Text(
             text = stringResource(movie.titleResId),
             style = MaterialTheme.typography.bodyLarge,
-            modifier = Modifier.padding(8.dp)
+            modifier = Modifier.padding(top = 8.dp, start = 8.dp, end = 8.dp)
+                               .fillMaxSize()
         )
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(top = 4.dp, start = 8.dp, end = 8.dp)
+                               .fillMaxSize()
 
-        Text(
-            text = "★ ${movie.rating}",
-            style = MaterialTheme.typography.bodySmall,
-            color = Color(0xFFFFD700),
-            modifier = Modifier.padding(start = 8.dp, bottom = 8.dp)
-        )
+        ){
+            Text(
+                text = "★",
+                style = MaterialTheme.typography.bodyMedium,
+                color = Color(0xFFFFD700),
+                fontSize = 15.sp
+            )
+            Spacer(modifier = Modifier.width(4.dp))
+            Text(
+                text = "${movie.rating}",
+                style = MaterialTheme.typography.bodySmall,
+                fontSize = 15.sp
+
+
+            )
+        }
+
     }
 }
 
@@ -241,7 +261,7 @@ fun MovieSection(navController: NavController) {
     val newMovies = DataSource().loadNewMovies()
     val popularMovies = DataSource().loadPopularMovies()
 
-    Text("New Movies", style = MaterialTheme.typography.headlineSmall, color = Color(0xFF1E6CE3))
+    Text("New Movies", style = MaterialTheme.typography.headlineSmall, color = Color(0xFF1E6CE3),fontWeight = FontWeight.Bold)
     LazyRow {
         items(newMovies) { movie ->
             MovieCard(movie, navController)
@@ -250,7 +270,7 @@ fun MovieSection(navController: NavController) {
 
     Spacer(modifier = Modifier.height(35.dp))
 
-    Text("Popular Movies", style = MaterialTheme.typography.headlineSmall, color = Color(0xFF1E6CE3))
+    Text("Popular Movies", style = MaterialTheme.typography.headlineSmall, color = Color(0xFF1E6CE3,),fontWeight = FontWeight.Bold)
     LazyRow {
         items(popularMovies) { movie ->
             MovieCard(movie, navController)
@@ -263,7 +283,7 @@ fun AnimeSection(navController: NavController) {
     val newAnimeList = DataSource().loadNewAnime()
     val popularAnimeList = DataSource().loadPopularAnime()
 
-    Text("New Anime", style = MaterialTheme.typography.headlineSmall, color = Color(0xFF1E6CE3))
+    Text("New Anime", style = MaterialTheme.typography.headlineSmall, color = Color(0xFF1E6CE3),fontWeight = FontWeight.Bold)
     LazyRow {
         items(newAnimeList) { anime ->
             MovieCard(anime, navController)
@@ -272,7 +292,7 @@ fun AnimeSection(navController: NavController) {
 
     Spacer(modifier = Modifier.height(32.dp))
 
-    Text("Popular Anime", style = MaterialTheme.typography.headlineSmall, color = Color(0xFF1E6CE3))
+    Text("Popular Anime", style = MaterialTheme.typography.headlineSmall, color = Color(0xFF1E6CE3),fontWeight = FontWeight.Bold)
     LazyRow {
         items(popularAnimeList) { anime ->
             MovieCard(anime, navController)

@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
 import com.example.movienew.data.DataSource
@@ -27,12 +28,12 @@ fun SearchScreen() {
                 DataSource().loadPopularAnime()
     }
 
-    // Convert movie titles to strings within the composable context
+
     val moviesWithTitles = allMovies.map { movie ->
         movie to stringResource(id = movie.titleResId)
     }
 
-    // Filter movies based on the first letter of their title
+
     val filteredMovies = moviesWithTitles.filter { (_, title) ->
         searchQuery.isEmpty() || title.startsWith(searchQuery, ignoreCase = true)
     }.map { it.first }
@@ -70,7 +71,7 @@ fun MovieCard(movie: Movie) {
             .padding(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Movie Poster
+
         Image(
             painter = rememberAsyncImagePainter(movie.posterResId),
             contentDescription = null,
@@ -79,7 +80,7 @@ fun MovieCard(movie: Movie) {
                 .padding(end = 16.dp)
         )
 
-        // Movie Details
+
         Column(
             modifier = Modifier.weight(1f)
         ) {
