@@ -25,9 +25,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.movienew.data.DataSource
 import com.example.movienew.model.Movie
 import com.example.movienew.ui.theme.MovieNewTheme
@@ -37,12 +39,7 @@ import com.example.movienew.screens.SignUpScreen
 import com.example.movienew.screens.LoginScreen
 import com.example.movienew.screens.SearchScreen
 import com.example.movienew.screens.EditProfileScreen
-
-
-
-
-
-
+import com.example.movienew.screens.ViewScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,7 +50,6 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-
                     AppNavigation()
                 }
             }
@@ -66,23 +62,31 @@ fun AppNavigation() {
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = "signup") {
-        composable("signup") { SignUpScreen(navController)
-        }
-        composable("login") { LoginScreen(navController)
-        }
-        composable("main") { MainScreen(navController)
-        }
-        composable("profile") { ProfileScreen(navController) // used for the logout to work
-        }
-        composable("editProfile") { EditProfileScreen(navController)
-        }
+        composable("signup") { SignUpScreen(navController) }
+        composable("login") { LoginScreen(navController) }
+        composable("main") { MainScreen(navController) }
+        composable("profile") { ProfileScreen(navController) }
+        composable("editProfile") { EditProfileScreen(navController) }
 
+        // Movie Details Screen
+        composable(
+            "movieDetails/{movieTitle}/{moviePoster}/{movieRating}/{movieDescription}",
+            arguments = listOf(
+                navArgument("movieTitle") { type = NavType.IntType },
+                navArgument("moviePoster") { type = NavType.IntType },
+                navArgument("movieRating") { type = NavType.StringType },
+                navArgument("movieDescription") { type = NavType.IntType }
+            )
+        ) { backStackEntry ->
+            val movieTitle = backStackEntry.arguments?.getInt("movieTitle") ?: 0
+            val moviePoster = backStackEntry.arguments?.getInt("moviePoster") ?: 0
+            val movieRating = backStackEntry.arguments?.getString("movieRating")?.toDouble() ?: 0.0
+            val movieDescription = backStackEntry.arguments?.getInt("movieDescription") ?: 0
+
+            ViewScreen(movieTitle, moviePoster, movieRating, movieDescription,navController = navController)
+        }
     }
 }
-
-
-
-
 
 
 @Composable
@@ -98,7 +102,7 @@ fun MainScreen(navController: NavController) {
     ) { paddingValues ->
         Box(modifier = Modifier.padding(paddingValues)) {
             when (selectedBottomTab) {
-                "Home" -> HomeScreen()
+                "Home" -> HomeScreen(navController)
                 "Bookmark" -> BookmarkScreen()
                 "Profile" -> ProfileScreen(navController)
                 "Search" -> SearchScreen()
@@ -107,7 +111,6 @@ fun MainScreen(navController: NavController) {
     }
 }
 
-// Bottom Navigation Bar
 @Composable
 fun BottomNavigationBar(selectedTab: String, onTabSelected: (String) -> Unit) {
     Row(
@@ -128,13 +131,12 @@ fun BottomNavigationBar(selectedTab: String, onTabSelected: (String) -> Unit) {
         BottomNavItem(Icons.Default.Person, "Profile", selectedTab == "Profile") {
             onTabSelected("Profile")
         }
-        BottomNavItem(Icons.Default.Search, "Search", selectedTab == "Search") {  // Added search icon
+        BottomNavItem(Icons.Default.Search, "Search", selectedTab == "Search") {
             onTabSelected("Search")
         }
     }
 }
 
-// Individual Navigation Item
 @Composable
 fun BottomNavItem(
     icon: androidx.compose.ui.graphics.vector.ImageVector,
@@ -161,13 +163,17 @@ fun BottomNavItem(
 }
 
 @Composable
-fun MovieCard(movie: Movie) {
+fun MovieCard(movie: Movie, navController: NavController) {
     Column(
         modifier = Modifier
             .padding(8.dp)
             .width(180.dp)
+            .clickable {
+                navController.navigate(
+                    "movieDetails/${movie.titleResId}/${movie.posterResId}/${movie.rating}/${movie.descriptionResId}"
+                )
+            }
     ) {
-        // Movie Poster
         Image(
             painter = painterResource(movie.posterResId),
             contentDescription = null,
@@ -176,49 +182,31 @@ fun MovieCard(movie: Movie) {
                 .fillMaxWidth()
         )
 
-        // Movie Title
         Text(
             text = stringResource(movie.titleResId),
             style = MaterialTheme.typography.bodyLarge,
-            modifier = Modifier
-                .padding(top = 8.dp, start = 8.dp, end = 8.dp)
-                .fillMaxWidth()
+            modifier = Modifier.padding(8.dp)
         )
 
-        // Rating Row
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .padding(top = 4.dp, start = 8.dp, end = 8.dp)
-                .fillMaxWidth()
-        ) {
-            Text(
-                text = "★",
-                style = MaterialTheme.typography.bodyMedium,
-                color = Color(0xFFFFD700)
-            )
-            Spacer(modifier = Modifier.width(4.dp))
-            Text(
-                text = movie.rating.toString(),
-                style = MaterialTheme.typography.bodyMedium
-            )
-        }
+        Text(
+            text = "★ ${movie.rating}",
+            style = MaterialTheme.typography.bodySmall,
+            color = Color(0xFFFFD700),
+            modifier = Modifier.padding(start = 8.dp, bottom = 8.dp)
+        )
     }
 }
 
-
-// Home Screen with Top Navigation Bar for Movies/Anime
 @Composable
-fun HomeScreen() {
+fun HomeScreen(navController: NavController) {
     var selectedTab by remember { mutableStateOf("Movie") }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())  // Vertical scroll
+            .verticalScroll(rememberScrollState())
             .padding(16.dp)
     ) {
-        // App Logo
         Image(
             painter = painterResource(id = R.drawable.movie_logo),
             contentDescription = "App Logo",
@@ -228,7 +216,6 @@ fun HomeScreen() {
                 .padding(bottom = 16.dp)
         )
 
-        // Top Navigation Bar (Movies/Anime)
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -241,41 +228,58 @@ fun HomeScreen() {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Display Movie or Anime Section Based on Tab Selection
         if (selectedTab == "Movie") {
-            MovieSection()
+            MovieSection(navController)
         } else {
-            AnimeSection()
+            AnimeSection(navController)
         }
     }
 }
 
 @Composable
-fun MovieSection() {
+fun MovieSection(navController: NavController) {
     val newMovies = DataSource().loadNewMovies()
     val popularMovies = DataSource().loadPopularMovies()
 
-    // New Movies Section
-    Text("New Movies", style = MaterialTheme.typography.headlineSmall,color = Color(0xFF1E6CE3))
+    Text("New Movies", style = MaterialTheme.typography.headlineSmall, color = Color(0xFF1E6CE3))
     LazyRow {
-        items(newMovies) { movie -> MovieCard(movie) }
+        items(newMovies) { movie ->
+            MovieCard(movie, navController)
+        }
     }
 
     Spacer(modifier = Modifier.height(35.dp))
 
-    // Popular Movies Section
-    Text("Popular Movies", style = MaterialTheme.typography.headlineSmall,color = Color(0xFF1E6CE3))
+    Text("Popular Movies", style = MaterialTheme.typography.headlineSmall, color = Color(0xFF1E6CE3))
     LazyRow {
-        items(popularMovies) { movie -> MovieCard(movie) }
+        items(popularMovies) { movie ->
+            MovieCard(movie, navController)
+        }
     }
 }
 
+@Composable
+fun AnimeSection(navController: NavController) {
+    val newAnimeList = DataSource().loadNewAnime()
+    val popularAnimeList = DataSource().loadPopularAnime()
 
+    Text("New Anime", style = MaterialTheme.typography.headlineSmall, color = Color(0xFF1E6CE3))
+    LazyRow {
+        items(newAnimeList) { anime ->
+            MovieCard(anime, navController)
+        }
+    }
 
+    Spacer(modifier = Modifier.height(32.dp))
 
+    Text("Popular Anime", style = MaterialTheme.typography.headlineSmall, color = Color(0xFF1E6CE3))
+    LazyRow {
+        items(popularAnimeList) { anime ->
+            MovieCard(anime, navController)
+        }
+    }
+}
 
-
-// Top Navigation Tab
 @Composable
 fun NavigationTab(text: String, isSelected: Boolean, onClick: () -> Unit) {
     Column(
@@ -295,26 +299,3 @@ fun NavigationTab(text: String, isSelected: Boolean, onClick: () -> Unit) {
         }
     }
 }
-
-@Composable
-fun AnimeSection() {
-    val newAnimeList = DataSource().loadNewAnime()
-    val popularAnimeList = DataSource().loadPopularAnime()
-
-    // New Anime Section
-    Text("New Anime", style = MaterialTheme.typography.headlineSmall,color = Color(0xFF1E6CE3))
-    LazyRow {
-        items(newAnimeList) { anime -> MovieCard(anime) }
-    }
-
-    Spacer(modifier = Modifier.height(32.dp))
-
-    // Popular Anime Section
-    Text("Popular Anime", style = MaterialTheme.typography.headlineSmall,color = Color(0xFF1E6CE3))
-    LazyRow {
-        items(popularAnimeList) { anime -> MovieCard(anime) }
-    }
-}
-
-
-

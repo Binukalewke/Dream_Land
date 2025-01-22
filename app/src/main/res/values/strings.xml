@@ -13,6 +13,30 @@
     <string name="movie_Arena_Wars">Arena Wars</string>
     <string name="movie_Dear_Santa">Dear Santa</string>
 
+    <!-- Movie Descriptions -->
+        <string name="desc_monterao">Monterao is a thrilling adventure</string>
+        <string name="desc_hot_frosty">Hot Frosty follows a magical journey</string>
+        <string name="desc_guardians_galaxy">Guardians of Galaxy team up to save</string>
+        <string name="desc_dark_knight">The Dark Knight protects Gotham</string>
+        <string name="desc_inception">Inception explores dreams and reality</string>
+        <string name="desc_interstellar">Interstellar takes you on a space voyage</string>
+        <string name="desc_black_panther">Black Panther defends Wakanda</string>
+        <string name="desc_avengers_endgame">Avengers: Endgame concludes the saga</string>
+        <string name="desc_thedemonhunter">The Demon Hunter embarks on a quest</string>
+        <string name="desc_tales_of_herding_gods">A tale of gods and mortals</string>
+        <string name="desc_endless_god_realm">Explore the Endless God Realm</string>
+        <string name="desc_battle_of_heavens">An epic battle in the heavens</string>
+    <string name="desc_amortalsjourney">Follow a mortal</string>
+        <string name="desc_xian_ni">Xian Ni explores mystical cultivation</string>
+        <string name="desc_jian_lai">Jian Lai tells a tale of swords and destiny</string>
+        <string name="desc_arena_wars">Arena Wars is a futuristic battle epic</string>
+        <string name="desc_dear_santa">Dear Santa is a heartfelt Christmas tale</string>
+        <string name="desc_soul_land">Soul Land is a journey into mystical realms</string>
+
+
+
+
+
 
     <!-- Anime Titles -->
     <string name="anime_thedemonhunter">The Demon Hunter</string>

@@ -7,6 +7,7 @@ import androidx.annotation.StringRes
 data class Movie(
     @StringRes val titleResId: Int,
     @DrawableRes val posterResId: Int,
-    val rating: Double
+    val rating: Double,
+    @StringRes val descriptionResId: Int
 
 )
