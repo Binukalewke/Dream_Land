@@ -3,7 +3,9 @@ package com.example.movienew.screens
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.BookmarkBorder
@@ -38,6 +40,7 @@ fun ViewScreen(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
+            .verticalScroll(rememberScrollState())
     ) {
         IconButton(
             onClick = { navController.popBackStack() },
@@ -145,7 +148,7 @@ fun DescriptionSection(movieDescription: Int) {
             Text(
                 text = stringResource(movieDescription),
                 style = MaterialTheme.typography.bodyMedium,
-                textAlign = TextAlign.Center,
+                textAlign = TextAlign.Left,
                 modifier = Modifier.padding(horizontal = 8.dp)
             )
         }
