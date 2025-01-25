@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bookmark
@@ -22,9 +23,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -165,55 +168,83 @@ fun BottomNavItem(
 }
 
 @Composable
-fun MovieCard(movie: Movie, navController: NavController) {
+fun NavigationTab(text: String, isSelected: Boolean, onClick: () -> Unit) {
     Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .padding(8.dp)
-            .width(180.dp)
-            .clickable {
-                navController.navigate(
-                    "movieDetails/${movie.titleResId}/${movie.posterResId}/${movie.rating}/${movie.descriptionResId}"
-                )
-            }
-            .clip(MaterialTheme.shapes.medium)
+            .clickable { onClick() }
     ) {
-        Image(
-            painter = painterResource(movie.posterResId),
-            contentDescription = null,
-            modifier = Modifier
-                .height(240.dp)
-                .fillMaxWidth()
-                .clip(MaterialTheme.shapes.medium)
-        )
-
-        Text(
-            text = stringResource(movie.titleResId),
-            style = MaterialTheme.typography.bodyLarge,
-            modifier = Modifier.padding(top = 8.dp, start = 8.dp, end = 8.dp)
-                               .fillMaxSize()
-        )
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(top = 4.dp, start = 8.dp, end = 8.dp)
-                               .fillMaxSize()
-
-        ){
-            Text(
-                text = "★",
-                style = MaterialTheme.typography.bodyMedium,
-                color = Color(0xFFFFD700),
-                fontSize = 15.sp
-            )
-            Spacer(modifier = Modifier.width(4.dp))
-            Text(
-                text = "${movie.rating}",
-                style = MaterialTheme.typography.bodySmall,
-                fontSize = 15.sp
-
-
+        Text(text = text, style = MaterialTheme.typography.bodyLarge,color = if (isSelected) MaterialTheme.colorScheme.primary else Color.Gray)
+        if (isSelected) {
+            Box(
+                modifier = Modifier
+                    .height(3.dp)
+                    .width(40.dp)
+                    .background(Color.Red)
+                    .background(MaterialTheme.colorScheme.primary)
             )
         }
+    }
+}
 
+
+
+
+@Composable
+fun MovieCard(movie: Movie, navController: NavController? = null) {
+    Card(
+        shape = RoundedCornerShape(12.dp),
+        modifier = Modifier
+            .width(160.dp)
+            .clickable {
+                navController?.navigate(
+                    "movieDetails/${movie.titleResId}/${movie.posterResId}/${movie.rating}/${movie.descriptionResId}"
+                )
+            },
+        elevation = CardDefaults.cardElevation(8.dp)
+    ) {
+        Column(modifier = Modifier.fillMaxWidth()) {
+
+            Image(
+                painter = painterResource(movie.posterResId),
+                contentDescription = stringResource(movie.titleResId),
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .height(200.dp)
+                    .fillMaxWidth()
+            )
+
+            Text(
+                text = stringResource(movie.titleResId),
+                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier
+                    .padding(8.dp,2.dp)
+                    .fillMaxWidth()
+
+
+            )
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(8.dp,2.dp)
+            ) {
+                Text(
+                    text = "★",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color(0xFFFFD700),
+                    fontSize = 25.sp
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(
+                    text = "${movie.rating}",
+                    style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.SemiBold),
+                    fontSize = 20.sp
+                )
+            }
+        }
     }
 }
 
@@ -261,8 +292,16 @@ fun MovieSection(navController: NavController) {
     val newMovies = DataSource().loadNewMovies()
     val popularMovies = DataSource().loadPopularMovies()
 
-    Text("New Movies", style = MaterialTheme.typography.headlineSmall, color = Color(0xFF1E6CE3),fontWeight = FontWeight.Bold)
-    LazyRow {
+    Text(
+        text = "New Movies",
+        style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
+        color = MaterialTheme.colorScheme.primary,
+        modifier = Modifier.padding(start = 8.dp, bottom = 8.dp)
+    )
+    LazyRow(
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        contentPadding = PaddingValues(horizontal = 8.dp)
+    ) {
         items(newMovies) { movie ->
             MovieCard(movie, navController)
         }
@@ -270,8 +309,16 @@ fun MovieSection(navController: NavController) {
 
     Spacer(modifier = Modifier.height(35.dp))
 
-    Text("Popular Movies", style = MaterialTheme.typography.headlineSmall, color = Color(0xFF1E6CE3,),fontWeight = FontWeight.Bold)
-    LazyRow {
+    Text(
+        text = "Popular Movies",
+        style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
+        color = MaterialTheme.colorScheme.primary,
+        modifier = Modifier.padding(start = 8.dp, bottom = 8.dp)
+    )
+    LazyRow(
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        contentPadding = PaddingValues(horizontal = 8.dp)
+    ) {
         items(popularMovies) { movie ->
             MovieCard(movie, navController)
         }
@@ -283,8 +330,16 @@ fun AnimeSection(navController: NavController) {
     val newAnimeList = DataSource().loadNewAnime()
     val popularAnimeList = DataSource().loadPopularAnime()
 
-    Text("New Anime", style = MaterialTheme.typography.headlineSmall, color = Color(0xFF1E6CE3),fontWeight = FontWeight.Bold)
-    LazyRow {
+    Text(
+        text = "New Anime",
+        style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
+        color = MaterialTheme.colorScheme.primary,
+        modifier = Modifier.padding(start = 8.dp, bottom = 8.dp)
+    )
+    LazyRow(
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        contentPadding = PaddingValues(horizontal = 8.dp)
+    ) {
         items(newAnimeList) { anime ->
             MovieCard(anime, navController)
         }
@@ -292,30 +347,19 @@ fun AnimeSection(navController: NavController) {
 
     Spacer(modifier = Modifier.height(32.dp))
 
-    Text("Popular Anime", style = MaterialTheme.typography.headlineSmall, color = Color(0xFF1E6CE3),fontWeight = FontWeight.Bold)
-    LazyRow {
+    Text(
+        text = "Popular Anime",
+        style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
+        color = MaterialTheme.colorScheme.primary,
+        modifier = Modifier.padding(start = 8.dp, bottom = 8.dp)
+    )
+    LazyRow(
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        contentPadding = PaddingValues(horizontal = 8.dp)
+    ) {
         items(popularAnimeList) { anime ->
             MovieCard(anime, navController)
         }
     }
 }
 
-@Composable
-fun NavigationTab(text: String, isSelected: Boolean, onClick: () -> Unit) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .padding(8.dp)
-            .clickable { onClick() }
-    ) {
-        Text(text = text, style = MaterialTheme.typography.bodyLarge)
-        if (isSelected) {
-            Box(
-                modifier = Modifier
-                    .height(3.dp)
-                    .width(40.dp)
-                    .background(Color.Red)
-            )
-        }
-    }
-}
