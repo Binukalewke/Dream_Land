@@ -28,7 +28,7 @@ fun BookmarkScreen() {
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        // Title
+
         Text(
             text = "Bookmarks",
             fontWeight = FontWeight.Bold,
@@ -37,7 +37,7 @@ fun BookmarkScreen() {
             color = Color(0xFF1E6CE3)
         )
 
-        // Empty State or Bookmarked Items
+
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             if (bookmarkedMovies.isEmpty()) {
                 item {
@@ -54,7 +54,7 @@ fun BookmarkScreen() {
             } else {
                 items(bookmarkedMovies) { movie ->
                     BookmarkMovieCard(movie) {
-                        bookmarkedMovies.remove(movie) // Remove movie on delete
+                        bookmarkedMovies.remove(movie)
                     }
                 }
             }
@@ -64,6 +64,8 @@ fun BookmarkScreen() {
 
 @Composable
 fun BookmarkMovieCard(movie: Movie, onDelete: () -> Unit) {
+    var Message by remember { mutableStateOf(false) }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -71,7 +73,6 @@ fun BookmarkMovieCard(movie: Movie, onDelete: () -> Unit) {
             .padding(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Movie Poster
         Image(
             painter = painterResource(id = movie.posterResId),
             contentDescription = null,
@@ -79,7 +80,7 @@ fun BookmarkMovieCard(movie: Movie, onDelete: () -> Unit) {
                 .size(100.dp)
                 .padding(end = 16.dp)
         )
-        // Movie Details
+
         Column(
             modifier = Modifier.weight(1f)
         ) {
@@ -89,7 +90,6 @@ fun BookmarkMovieCard(movie: Movie, onDelete: () -> Unit) {
                 color = Color.White
             )
             Spacer(modifier = Modifier.height(4.dp))
-            // Rating Row
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -106,9 +106,9 @@ fun BookmarkMovieCard(movie: Movie, onDelete: () -> Unit) {
                 )
             }
         }
-        // Delete Button
+
         IconButton(
-            onClick = onDelete,
+            onClick = { Message = true },
             modifier = Modifier.size(40.dp)
         ) {
             Icon(
@@ -118,6 +118,30 @@ fun BookmarkMovieCard(movie: Movie, onDelete: () -> Unit) {
             )
         }
     }
+
     Spacer(modifier = Modifier.height(12.dp))
+
+
+    if (Message) {
+        AlertDialog(
+            onDismissRequest = { Message = false },
+            title = { Text(text = "Delete Bookmark") },
+            text = { Text(text = "Do you wish to delete this bookmark?") },
+            confirmButton = {
+                TextButton(onClick = {
+                    onDelete()
+                    Message = false
+                }) {
+                    Text(text = "Yes")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { Message = false }) {
+                    Text(text = "No")
+                }
+            }
+        )
+    }
 }
+
 
