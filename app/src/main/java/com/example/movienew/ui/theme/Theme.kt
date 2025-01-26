@@ -10,14 +10,14 @@ val DarkIcon = Color.White
 val LightIcon = Color.Black
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Color(0xFF1E6CE3),
+    primary = Blue,
     secondary = PurpleGrey80,
     tertiary = Pink80,
     onBackground = DarkIcon
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Color(0xFF1E6CE3),
+    primary = Blue,
     secondary = PurpleGrey40,
     tertiary = Pink40,
     onBackground = LightIcon
