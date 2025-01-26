@@ -49,7 +49,8 @@ fun ViewScreen(
             Icon(
                 painter = painterResource(R.drawable.back_arrow),
                 contentDescription = "Back",
-                tint = MaterialTheme.colorScheme.primary
+                tint = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier.size(30.dp)
             )
         }
 
@@ -128,7 +129,7 @@ fun DescriptionSection(movieDescription: Int) {
     Card(
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFFF5EFE7)),
+        colors = CardDefaults.cardColors(containerColor = Color(0xFFF5EFE7)), // Fixed light color
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
@@ -147,8 +148,9 @@ fun DescriptionSection(movieDescription: Int) {
             )
             Text(
                 text = stringResource(movieDescription),
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.bodyLarge,
                 textAlign = TextAlign.Left,
+                color = Color.Black,
                 modifier = Modifier.padding(horizontal = 8.dp)
             )
         }
@@ -160,11 +162,10 @@ fun ReviewSection() {
     Card(
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFFF5EFE7)),
+        colors = CardDefaults.cardColors(containerColor = Color(0xFFF5EFE7)), // Fixed light color
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
-
     ) {
         Column(
             modifier = Modifier
@@ -178,8 +179,6 @@ fun ReviewSection() {
                 color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
-
-
             Button(
                 onClick = { /* TODO */ },
                 modifier = Modifier.padding(top = 16.dp)
@@ -189,3 +188,4 @@ fun ReviewSection() {
         }
     }
 }
+
