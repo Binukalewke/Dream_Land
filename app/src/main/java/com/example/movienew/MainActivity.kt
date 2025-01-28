@@ -251,6 +251,19 @@ fun MovieCard(movie: Movie, navController: NavController? = null) {
 @Composable
 fun HomeScreen(navController: NavController) {
     var selectedTab by remember { mutableStateOf("Movie") }
+    val movieDataSource = DataSource()
+    val bannerMovies = movieDataSource.PosterBanner()
+
+    // track the current banner image
+    var currentBannerIndex by remember { mutableStateOf(0) }
+
+    // change image every 5 seconds
+    LaunchedEffect(Unit) {
+        while (true) {
+            kotlinx.coroutines.delay(5000L) // 5 seconds
+            currentBannerIndex = (currentBannerIndex + 1) % bannerMovies.size
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -258,14 +271,25 @@ fun HomeScreen(navController: NavController) {
             .verticalScroll(rememberScrollState())
             .padding(16.dp)
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.movie_logo),
-            contentDescription = "App Logo",
+
+
+        Box(
             modifier = Modifier
-                .size(120.dp)
-                .align(Alignment.CenterHorizontally)
-                .padding(bottom = 16.dp)
-        )
+                .fillMaxWidth()
+                .height(200.dp)
+        ) {
+            Image(
+                painter = painterResource(id = bannerMovies[currentBannerIndex].posterResId),
+                contentDescription = "Movie Banner",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.LightGray)
+            )
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
 
         Row(
             modifier = Modifier
@@ -279,6 +303,7 @@ fun HomeScreen(navController: NavController) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
+
         if (selectedTab == "Movie") {
             MovieSection(navController)
         } else {
@@ -286,6 +311,8 @@ fun HomeScreen(navController: NavController) {
         }
     }
 }
+
+
 
 @Composable
 fun MovieSection(navController: NavController) {
