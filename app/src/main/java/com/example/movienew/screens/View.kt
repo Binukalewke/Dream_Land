@@ -45,12 +45,14 @@ fun ViewScreen(
         IconButton(
             onClick = { navController.popBackStack() },
             modifier = Modifier.align(Alignment.Start)
+                .padding(top = 16.dp)
         ) {
             Icon(
                 painter = painterResource(R.drawable.back_arrow),
                 contentDescription = "Back",
                 tint = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier.size(30.dp)
+                    .padding(top = 10.dp)
             )
         }
 
