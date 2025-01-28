@@ -5,7 +5,6 @@ import com.example.movienew.model.Movie
 
 class DataSource {
 
-
     fun loadNewMovies(): List<Movie> {
         return listOf(
             Movie(
@@ -28,7 +27,6 @@ class DataSource {
             )
         )
     }
-
 
     fun loadPopularMovies(): List<Movie> {
         return listOf(
@@ -65,7 +63,6 @@ class DataSource {
         )
     }
 
-
     fun loadNewAnime(): List<Movie> {
         return listOf(
             Movie(
@@ -94,7 +91,6 @@ class DataSource {
             )
         )
     }
-
 
     fun loadPopularAnime(): List<Movie> {
         return listOf(
@@ -125,7 +121,6 @@ class DataSource {
         )
     }
 
-
     fun loadBookmarkedMovies(): List<Movie> {
         return listOf(
             Movie(
@@ -146,6 +141,44 @@ class DataSource {
                 rating = 4.2,
                 descriptionResId = R.string.desc_soul_land
             )
+        )
+    }
+
+    fun PosterBanner(): List<Movie> {
+        return listOf(
+            Movie(
+                R.string.movie_Arena_Wars,
+                R.drawable.lion2,
+                rating = 4.8,
+                descriptionResId = R.string.desc_arena_wars
+            ),
+            Movie(
+                R.string.movie_Dear_Santa,
+                R.drawable.avartar,
+                rating = 4.5,
+                descriptionResId = R.string.desc_dear_santa
+            ),
+            Movie(
+                R.string.anime_soulland,
+                R.drawable.cars,
+                rating = 4.2,
+                descriptionResId = R.string.desc_soul_land
+            ),
+            Movie(
+                R.string.anime_soulland,
+                R.drawable.inception,
+                rating = 4.2,
+                descriptionResId = R.string.desc_soul_land
+            ),
+            Movie(
+                R.string.anime_soulland,
+                R.drawable.demon,
+                rating = 4.2,
+                descriptionResId = R.string.desc_soul_land
+            )
+
+
+
         )
     }
 }
