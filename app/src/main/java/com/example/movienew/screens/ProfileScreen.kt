@@ -4,7 +4,9 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -54,7 +56,7 @@ fun ProfileScreen(navController: NavController) {
             }
         }
 
-        // Profile Picture
+
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -62,7 +64,7 @@ fun ProfileScreen(navController: NavController) {
             contentAlignment = Alignment.Center
         ) {
             Image(
-                painter = painterResource(id = R.drawable.profile_picture),
+                painter = painterResource(id = R.drawable.profile2),
                 contentDescription = "Profile Picture",
                 modifier = Modifier
                     .size(100.dp)
@@ -71,7 +73,7 @@ fun ProfileScreen(navController: NavController) {
             )
         }
 
-        // Username
+
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
@@ -88,7 +90,7 @@ fun ProfileScreen(navController: NavController) {
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Profile Options
+
         Column(
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -136,7 +138,8 @@ fun Edit(onDismiss: () -> Unit) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(16.dp),
+                    .padding(16.dp)
+                    .verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.Start
             ) {
