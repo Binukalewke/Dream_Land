@@ -12,6 +12,8 @@
     <string name="movie_avengers_endgame">Avengers: Endgame</string>
     <string name="movie_Arena_Wars">Arena Wars</string>
     <string name="movie_Dear_Santa">Dear Santa</string>
+    <string name="movie_Sonic_the_Hedgehog_3">Sonic the Hedgehog 3</string>
+    <string name="movie_Sentinel">Sentinel</string>
 
     <!-- Movie Descriptions -->
         <string name="desc_monterao">Monterao is a thrilling adventure</string>
@@ -32,7 +34,11 @@
         <string name="desc_arena_wars">Arena Wars is a futuristic battle epic</string>
         <string name="desc_dear_santa">Dear Santa is a heartfelt Christmas tale</string>
         <string name="desc_soul_land">Soul Land is a journey into mystical realms</string>
-
+        <string name="desc_Shrouding_The_Heavens">Shrouding The Heavens</string>
+        <string name="desc_world_of_Immortals">World of Immortals</string>
+        <string name="desc_swallowed_star">Swallowed Star</string>
+        <string name="desc_Sonic_the_Hedgehog_3">Sonic the Hedgehog 3</string>
+        <string name="desc_Sentinel">Sentinel</string>
 
 
 
@@ -47,6 +53,10 @@
     <string name="anime_Jian_Lai">Jian Lai</string>
     <string name="anime_Battle_of_Heavens">Battle Of Heavens</string>
     <string name="anime_soulland">Soul Land</string>
+    <string name="anime_Shrouding_The_Heavens">Shrouding The Heavens</string>
+    <string name="anime_world_of_Immortals">World of Immortals</string>
+    <string name="anime_swallowed_star">Swallowed Star</string>
+
 
 
 

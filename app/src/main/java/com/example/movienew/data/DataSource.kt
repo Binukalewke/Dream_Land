@@ -24,6 +24,18 @@ class DataSource {
                 R.drawable.movie_poster_3,
                 rating = 8.0,
                 descriptionResId = R.string.desc_guardians_galaxy
+            ),
+            Movie(
+                R.string.movie_Sonic_the_Hedgehog_3,
+                R.drawable.movie_poster_14,
+                rating = 7.0,
+                descriptionResId = R.string.desc_Sonic_the_Hedgehog_3
+            ),
+            Movie(
+                R.string.movie_Sentinel,
+                R.drawable.movie_poster_15,
+                rating = 5.7,
+                descriptionResId = R.string.desc_Sentinel
             )
         )
     }
@@ -68,7 +80,7 @@ class DataSource {
             Movie(
                 R.string.anime_thedemonhunter,
                 R.drawable.anime_poster_1,
-                rating = 9.2,
+                rating = 9.0,
                 descriptionResId = R.string.desc_thedemonhunter
             ),
             Movie(
@@ -80,14 +92,20 @@ class DataSource {
             Movie(
                 R.string.anime_Endless_God_Realm,
                 R.drawable.anime_poster_5,
-                rating = 9.2,
+                rating = 8.1,
                 descriptionResId = R.string.desc_endless_god_realm
             ),
             Movie(
                 R.string.anime_Battle_of_Heavens,
                 R.drawable.anime_poster_6,
-                rating = 9.2,
+                rating = 9.5,
                 descriptionResId = R.string.desc_battle_of_heavens
+            ),
+            Movie(
+                R.string.anime_world_of_Immortals,
+                R.drawable.anime_poster_10,
+                rating = 9.0,
+                descriptionResId = R.string.desc_world_of_Immortals
             )
         )
     }
@@ -103,7 +121,7 @@ class DataSource {
             Movie(
                 R.string.anime_Xian_Ni,
                 R.drawable.anime_poster_7,
-                rating = 9.2,
+                rating = 8.3,
                 descriptionResId = R.string.desc_xian_ni
             ),
             Movie(
@@ -113,11 +131,18 @@ class DataSource {
                 descriptionResId = R.string.desc_jian_lai
             ),
             Movie(
-                R.string.anime_thedemonhunter,
-                R.drawable.anime_poster_1,
-                rating = 9.2,
-                descriptionResId = R.string.desc_thedemonhunter
+                R.string.anime_Shrouding_The_Heavens,
+                R.drawable.anime_poster_9,
+                rating = 8.6,
+                descriptionResId = R.string.desc_Shrouding_The_Heavens
+            ),
+            Movie(
+                R.string.anime_swallowed_star,
+                R.drawable.anime_poster_11,
+                rating = 8.9,
+                descriptionResId = R.string.desc_swallowed_star
             )
+
         )
     }
 
@@ -126,19 +151,19 @@ class DataSource {
             Movie(
                 R.string.movie_Arena_Wars,
                 R.drawable.movie_poster_9,
-                rating = 4.8,
+                rating = 7.8,
                 descriptionResId = R.string.desc_arena_wars
             ),
             Movie(
                 R.string.movie_Dear_Santa,
                 R.drawable.movie_poster_10,
-                rating = 4.5,
+                rating = 6.5,
                 descriptionResId = R.string.desc_dear_santa
             ),
             Movie(
                 R.string.anime_soulland,
                 R.drawable.anime_poster_3,
-                rating = 4.2,
+                rating = 9.0,
                 descriptionResId = R.string.desc_soul_land
             )
         )
@@ -173,6 +198,12 @@ class DataSource {
             Movie(
                 R.string.anime_soulland,
                 R.drawable.demon,
+                rating = 4.2,
+                descriptionResId = R.string.desc_soul_land
+            ),
+            Movie(
+                R.string.anime_soulland,
+                R.drawable.deadpool,
                 rating = 4.2,
                 descriptionResId = R.string.desc_soul_land
             )
