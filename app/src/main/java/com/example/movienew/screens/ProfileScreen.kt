@@ -21,16 +21,22 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavController
 import com.example.movienew.R
+import com.example.movienew.ui.theme.Blue
+import com.example.movienew.ui.theme.errorDark
+import com.example.movienew.ui.theme.errorLight
 
 @Composable
 fun ProfileScreen(navController: NavController) {
-    var isEditDialogOpen by remember { mutableStateOf(false) }
+    var Editcredentials by remember { mutableStateOf(false) }
+    var Logoutmessage by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
             .padding(16.dp)
+            .verticalScroll(rememberScrollState())
+
     ) {
         Row(
             modifier = Modifier
@@ -43,10 +49,10 @@ fun ProfileScreen(navController: NavController) {
                 text = "PROFILE",
                 fontSize = 28.sp,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary
+                color = Blue
             )
 
-            IconButton(onClick = { isEditDialogOpen = true }) {
+            IconButton(onClick = { Editcredentials = true }) {
                 Icon(
                     painter = painterResource(id = R.drawable.edit),
                     contentDescription = "Edit Profile",
@@ -55,7 +61,6 @@ fun ProfileScreen(navController: NavController) {
                 )
             }
         }
-
 
         Box(
             modifier = Modifier
@@ -73,7 +78,6 @@ fun ProfileScreen(navController: NavController) {
             )
         }
 
-
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
@@ -90,7 +94,6 @@ fun ProfileScreen(navController: NavController) {
 
         Spacer(modifier = Modifier.height(24.dp))
 
-
         Column(
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -103,7 +106,7 @@ fun ProfileScreen(navController: NavController) {
             ProfileOption(
                 icon = R.drawable.logout,
                 title = "Logout",
-                onClick = { navController.navigate("login") }
+                onClick = { Logoutmessage = true }
             )
 
             ProfileSwitch(
@@ -118,8 +121,31 @@ fun ProfileScreen(navController: NavController) {
         }
     }
 
-    if (isEditDialogOpen) {
-        Edit(onDismiss = { isEditDialogOpen = false })
+    if (Editcredentials) {
+        Edit(onDismiss = { Editcredentials = false })
+    }
+
+    if (Logoutmessage) {
+        AlertDialog(
+            onDismissRequest = { Logoutmessage = false },
+            title = { Text("Logout") },
+            text = { Text("Do you wish to logout?",color = errorLight) },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        Logoutmessage = false
+                        navController.navigate("login")
+                    }
+                ) {
+                    Text("Yes")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { Logoutmessage = false }) {
+                    Text("No")
+                }
+            }
+        )
     }
 }
 
@@ -145,7 +171,7 @@ fun Edit(onDismiss: () -> Unit) {
             ) {
                 IconButton(onClick = { onDismiss() }) {
                     Icon(
-                        painter = painterResource(id = R.drawable.back_arrow),
+                        painter = painterResource(id = R.drawable.back2),
                         contentDescription = "Back to Profile",
                         tint = MaterialTheme.colorScheme.onBackground,
                         modifier = Modifier.size(30.dp)
