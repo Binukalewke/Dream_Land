@@ -6,17 +6,18 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
+import kotlinx.coroutines.delay
 import coil.compose.rememberAsyncImagePainter
-import coil.compose.rememberImagePainter
 import com.example.movienew.data.DataSource
 import com.example.movienew.model.Movie
 import com.example.movienew.ui.theme.lightblack
@@ -24,6 +25,8 @@ import com.example.movienew.ui.theme.lightblack
 @Composable
 fun SearchScreen() {
     var searchQuery by remember { mutableStateOf("") }
+    var isLoading by remember { mutableStateOf(false) }
+
     val allMovies = remember {
         DataSource().loadNewMovies() +
                 DataSource().loadPopularMovies() +
@@ -31,34 +34,45 @@ fun SearchScreen() {
                 DataSource().loadPopularAnime()
     }
 
-
     val moviesWithTitles = allMovies.map { movie ->
         movie to stringResource(id = movie.titleResId)
     }
-
 
     val filteredMovies = moviesWithTitles.filter { (_, title) ->
         searchQuery.isEmpty() || title.startsWith(searchQuery, ignoreCase = true)
     }.map { it.first }
 
+
+    LaunchedEffect(searchQuery) {
+        isLoading = true
+        delay(500)
+        isLoading = false
+    }
+
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
 
 
-
-
-        // Search Bar
         OutlinedTextField(
             value = searchQuery,
             onValueChange = { searchQuery = it },
             label = { Text("Search for a Movie or Anime") },
             modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(16.dp)
-
+            shape = RoundedCornerShape(16.dp),
+            trailingIcon = {
+                if (isLoading) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(24.dp).alpha(0.7f),
+                        strokeWidth = 2.dp
+                    )
+                } else {
+                    Icon(Icons.Default.Search, contentDescription = "Search Icon")
+                }
+            }
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Display search results
+
         LazyColumn {
             items(filteredMovies) { movie ->
                 MovieCard(movie)
@@ -76,7 +90,6 @@ fun MovieCard(movie: Movie) {
             .padding(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-
         Image(
             painter = rememberAsyncImagePainter(movie.posterResId),
             contentDescription = null,
@@ -84,7 +97,6 @@ fun MovieCard(movie: Movie) {
                 .size(100.dp)
                 .padding(end = 16.dp)
         )
-
 
         Column(
             modifier = Modifier.weight(1f)
@@ -103,7 +115,6 @@ fun MovieCard(movie: Movie) {
                     style = MaterialTheme.typography.bodyMedium,
                     color = Color.Yellow,
                     modifier = Modifier.alignByBaseline()
-
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
@@ -117,6 +128,7 @@ fun MovieCard(movie: Movie) {
     }
     Spacer(modifier = Modifier.height(12.dp))
 }
+
 
 
 
