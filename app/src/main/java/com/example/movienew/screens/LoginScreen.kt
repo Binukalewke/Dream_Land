@@ -27,83 +27,88 @@ import com.example.movienew.R
 
 @Composable
 fun LoginScreen(navController: NavController) {
-    // Remember the scroll state
+
     val scrollState = rememberScrollState()
 
-    // Use a scrollable Column
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(scrollState) // Enable scrolling
-            .padding(16.dp), // Add padding to the screen
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally // Align content horizontally
+            .verticalScroll(scrollState)
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Logo
-        Image(
-            painter = painterResource(id = R.drawable.movie_logo),
-            contentDescription = "Login Logo",
-            modifier = Modifier
-                .size(100.dp)
-                .align(Alignment.CenterHorizontally) // Center logo explicitly
-        )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.weight(1f))
 
-        // Email Input Field
-        var email by remember { mutableStateOf("") }
-        OutlinedTextField(
-            value = email,
-            onValueChange = { email = it },
-            label = { Text("Email") },
+
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxWidth()
-        )
+        ) {
 
-        Spacer(modifier = Modifier.height(16.dp))
+            Image(
+                painter = painterResource(id = R.drawable.movie_logo),
+                contentDescription = "Login Logo",
+                modifier = Modifier.size(100.dp)
+            )
 
-        // Password Input Field
-        var password by remember { mutableStateOf("") }
-        OutlinedTextField(
-            value = password,
-            onValueChange = { password = it },
-            label = { Text("Password") },
+            Spacer(modifier = Modifier.height(16.dp))
+
+
+            var email by remember { mutableStateOf("") }
+            OutlinedTextField(
+                value = email,
+                onValueChange = { email = it },
+                label = { Text("Email") },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+
+            var password by remember { mutableStateOf("") }
+            OutlinedTextField(
+                value = password,
+                onValueChange = { password = it },
+                label = { Text("Password") },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+
+            Button(
+                onClick = { navController.navigate("main") },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Login")
+            }
+        }
+
+
+        Spacer(modifier = Modifier.weight(1f))
+
+
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxWidth()
-        )
+        ) {
+            Text("Don't have an account?")
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Button(
+                onClick = { navController.navigate("signup") },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Sign Up")
+            }
+        }
 
         Spacer(modifier = Modifier.height(32.dp))
-
-        // Login Button
-        Button(
-            onClick = {
-                navController.navigate("main")
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-
-        ) {
-            Text("Login")
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Sign Up Row
-        Row(
-            horizontalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Don't have an account? ")
-            Text(
-                "Sign Up",
-                color = MaterialTheme.colorScheme.primary,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.clickable {
-                    navController.navigate("signup")
-                },
-                style = MaterialTheme.typography.bodyMedium.copy(textDecoration = TextDecoration.Underline)
-            )
-        }
-
-        // Extra space for scrolling
-        Spacer(modifier = Modifier.height(100.dp))
     }
 }
+
+
+
+
