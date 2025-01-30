@@ -5,10 +5,12 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -17,6 +19,7 @@ import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
 import com.example.movienew.data.DataSource
 import com.example.movienew.model.Movie
+import com.example.movienew.ui.theme.lightblack
 
 @Composable
 fun SearchScreen() {
@@ -47,8 +50,10 @@ fun SearchScreen() {
         OutlinedTextField(
             value = searchQuery,
             onValueChange = { searchQuery = it },
-            label = { Text("Search a Movie or Anime") },
-            modifier = Modifier.fillMaxWidth()
+            label = { Text("Search for a Movie or Anime") },
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(16.dp)
+
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -67,7 +72,7 @@ fun MovieCard(movie: Movie) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color(0xFF1A1A1A), shape = MaterialTheme.shapes.medium)
+            .background(color = lightblack, shape = MaterialTheme.shapes.medium)
             .padding(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -96,13 +101,16 @@ fun MovieCard(movie: Movie) {
                 Text(
                     text = "★",
                     style = MaterialTheme.typography.bodyMedium,
-                    color = Color.Yellow
+                    color = Color.Yellow,
+                    modifier = Modifier.alignByBaseline()
+
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
                     text = movie.rating.toString(),
                     style = MaterialTheme.typography.bodyMedium,
-                    color = Color.White
+                    color = Color.White,
+                    modifier = Modifier.alignByBaseline()
                 )
             }
         }
