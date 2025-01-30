@@ -1,20 +1,26 @@
 package com.example.movienew.screens
 
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.*
+
 import com.example.movienew.data.DataSource
 import com.example.movienew.model.Movie
 import com.example.movienew.R
@@ -31,7 +37,6 @@ fun BookmarkScreen() {
             .fillMaxSize()
             .padding(16.dp)
     ) {
-
         Text(
             text = "Bookmark",
             fontWeight = FontWeight.Bold,
@@ -39,7 +44,6 @@ fun BookmarkScreen() {
             modifier = Modifier.padding(bottom = 16.dp),
             color = Blue
         )
-
 
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             if (bookmarkedMovies.isEmpty()) {
@@ -50,8 +54,7 @@ fun BookmarkScreen() {
                     ) {
                         Text(
                             "No bookmarks yet!",
-                            style = MaterialTheme.typography.bodyMedium,
-
+                            style = MaterialTheme.typography.bodyMedium
                         )
                     }
                 }
@@ -68,7 +71,19 @@ fun BookmarkScreen() {
 
 @Composable
 fun BookmarkMovieCard(movie: Movie, onDelete: () -> Unit) {
-    var Message by remember { mutableStateOf(false) }
+    var showMessage by remember { mutableStateOf(false) }
+    var isJiggling by remember { mutableStateOf(false) }
+    val coroutineScope = rememberCoroutineScope()
+    var jiggleJob by remember { mutableStateOf<Job?>(null) } // Track coroutine job
+
+    // Jiggle Animation
+    val rotation by animateFloatAsState(
+        targetValue = if (isJiggling) 10f else 0f, // Jiggle effect on click
+        animationSpec = infiniteRepeatable(
+            animation = tween(100, easing = LinearEasing),
+            repeatMode = RepeatMode.Reverse
+        ), label = ""
+    )
 
     Row(
         modifier = Modifier
@@ -112,8 +127,18 @@ fun BookmarkMovieCard(movie: Movie, onDelete: () -> Unit) {
         }
 
         IconButton(
-            onClick = { Message = true },
-            modifier = Modifier.size(40.dp)
+            onClick = {
+                isJiggling = true
+
+                jiggleJob = coroutineScope.launch {
+                    delay(400) // Jiggle delay
+                    isJiggling = false
+                    showMessage = true
+                }
+            },
+            modifier = Modifier
+                .size(40.dp)
+                .rotate(rotation) // call jiggle effect
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.delete),
@@ -125,27 +150,42 @@ fun BookmarkMovieCard(movie: Movie, onDelete: () -> Unit) {
 
     Spacer(modifier = Modifier.height(12.dp))
 
-
-    if (Message) {
+    if (showMessage) {
         AlertDialog(
-            onDismissRequest = { Message = false },
+            onDismissRequest = {
+                showMessage = false
+                isJiggling = false
+                jiggleJob?.cancel()
+            },
             title = { Text(text = "Delete Bookmark") },
-            text = { Text(text = "Do you wish to delete this bookmark?",color = errorLight) },
+            text = { Text(text = "Do you wish to delete this bookmark?", color = errorLight) },
             confirmButton = {
                 TextButton(onClick = {
                     onDelete()
-                    Message = false
+                    showMessage = false
+                    isJiggling = false
+                    jiggleJob?.cancel()
                 }) {
                     Text(text = "Yes")
                 }
             },
             dismissButton = {
-                TextButton(onClick = { Message = false }) {
+                TextButton(onClick = {
+                    showMessage = false
+                    isJiggling = false
+                    jiggleJob?.cancel()
+                }) {
                     Text(text = "No")
                 }
             }
         )
     }
 }
+
+
+
+
+
+
 
 
