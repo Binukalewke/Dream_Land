@@ -46,6 +46,11 @@ import com.example.movienew.screens.LoginScreen
 import com.example.movienew.screens.SearchScreen
 import com.example.movienew.screens.EditProfileScreen
 import com.example.movienew.screens.ViewScreen
+import com.example.movienew.ui.theme.Blue
+import com.example.movienew.ui.theme.beige
+import com.example.movienew.ui.theme.staryellow
+
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -94,6 +99,7 @@ fun AppNavigation() {
 }
 
 
+
 @Composable
 fun MainScreen(navController: NavController) {
     var selectedBottomTab by remember { mutableStateOf("Home") }
@@ -121,7 +127,7 @@ fun BottomNavigationBar(selectedTab: String, onTabSelected: (String) -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color(0xFFF5EFE7))
+            .background(color = beige)
             .padding(12.dp)
             .height(60.dp),
         horizontalArrangement = Arrangement.SpaceEvenly,
@@ -158,35 +164,16 @@ fun BottomNavItem(
         Icon(
             imageVector = icon,
             contentDescription = label,
-            tint = if (isSelected) Color(0xFF1E6CE3) else Color.Gray
+            tint = if (isSelected) Blue else Color.Gray
         )
         Text(
             text = label,
-            color = if (isSelected) Color(0xFF1E6CE3) else Color.Gray
+            color = if (isSelected) Blue else Color.Gray
         )
     }
 }
 
-@Composable
-fun NavigationTab(text: String, isSelected: Boolean, onClick: () -> Unit) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .padding(8.dp)
-            .clickable { onClick() }
-    ) {
-        Text(text = text, style = MaterialTheme.typography.bodyLarge,color = if (isSelected) MaterialTheme.colorScheme.primary else Color.Gray)
-        if (isSelected) {
-            Box(
-                modifier = Modifier
-                    .height(3.dp)
-                    .width(40.dp)
-                    .background(Color.Red)
-                    .background(MaterialTheme.colorScheme.primary)
-            )
-        }
-    }
-}
+
 
 
 
@@ -202,7 +189,8 @@ fun MovieCard(movie: Movie, navController: NavController? = null) {
                     "movieDetails/${movie.titleResId}/${movie.posterResId}/${movie.rating}/${movie.descriptionResId}"
                 )
             },
-        elevation = CardDefaults.cardElevation(8.dp)
+        elevation = CardDefaults.cardElevation(8.dp),
+
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
 
@@ -230,18 +218,21 @@ fun MovieCard(movie: Movie, navController: NavController? = null) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.padding(8.dp,2.dp)
+
             ) {
                 Text(
                     text = "★",
                     style = MaterialTheme.typography.bodyMedium,
-                    color = Color(0xFFFFD700),
-                    fontSize = 25.sp
+                    color = staryellow,
+                    fontSize = 20.sp,
+                    modifier = Modifier.alignByBaseline()
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
                     text = "${movie.rating}",
                     style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.SemiBold),
-                    fontSize = 20.sp
+                    fontSize = 18.sp,
+                    modifier = Modifier.alignByBaseline()
                 )
             }
         }
@@ -254,13 +245,13 @@ fun HomeScreen(navController: NavController) {
     val movieDataSource = DataSource()
     val bannerMovies = movieDataSource.PosterBanner()
 
-    // track the current banner image
+    // Track the current banner image
     var currentBannerIndex by remember { mutableStateOf(0) }
 
-    // change image every 5 seconds
+    // Change image every 5 seconds
     LaunchedEffect(Unit) {
         while (true) {
-            kotlinx.coroutines.delay(5000L) // 5 seconds
+            kotlinx.coroutines.delay(5000L)// 5sec
             currentBannerIndex = (currentBannerIndex + 1) % bannerMovies.size
         }
     }
@@ -269,45 +260,92 @@ fun HomeScreen(navController: NavController) {
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .padding(16.dp)
     ) {
-
-
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(200.dp)
-        ) {
-            Image(
-                painter = painterResource(id = bannerMovies[currentBannerIndex].posterResId),
-                contentDescription = "Movie Banner",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color.LightGray)
-            )
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
+        Spacer(modifier = Modifier.height(8.dp))
 
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 8.dp),
-            horizontalArrangement = Arrangement.Center
+                .padding(top = 5.dp),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            NavigationTab("Movie", selectedTab == "Movie") { selectedTab = "Movie" }
-            NavigationTab("Anime", selectedTab == "Anime") { selectedTab = "Anime" }
+            Image(
+                painter = painterResource(id = R.drawable.movie_logo),
+                contentDescription = "App Logo",
+                modifier = Modifier.size(40.dp)
+            )
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            Text(
+                text = "Dream Land",
+                style = MaterialTheme.typography.headlineLarge.copy(fontWeight = FontWeight.Bold),
+                color = Blue
+            )
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(16 / 9f)
+                    .clip(RoundedCornerShape(16.dp))
+            ) {
+                Image(
+                    painter = painterResource(id = bannerMovies[currentBannerIndex].posterResId),
+                    contentDescription = "Movie Banner",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.LightGray)
+                )
+            }
 
-        if (selectedTab == "Movie") {
-            MovieSection(navController)
-        } else {
-            AnimeSection(navController)
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 12.dp),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                NavigationTab("Movie", selectedTab == "Movie") { selectedTab = "Movie" }
+                NavigationTab("Anime", selectedTab == "Anime") { selectedTab = "Anime" }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            if (selectedTab == "Movie") {
+                MovieSection(navController)
+            } else {
+                AnimeSection(navController)
+            }
+        }
+    }
+}
+
+@Composable
+fun NavigationTab(text: String, isSelected: Boolean, onClick: () -> Unit) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .padding(8.dp)
+            .clickable { onClick() }
+    ) {
+        Text(text = text, style = MaterialTheme.typography.bodyLarge,color = if (isSelected) MaterialTheme.colorScheme.primary else Color.Gray)
+        if (isSelected) {
+            Box(
+                modifier = Modifier
+                    .height(3.dp)
+                    .width(40.dp)
+                    .background(Color.Red)
+                    .background(MaterialTheme.colorScheme.primary)
+            )
         }
     }
 }
@@ -322,7 +360,7 @@ fun MovieSection(navController: NavController) {
     Text(
         text = "New Movies",
         style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
-        color = MaterialTheme.colorScheme.primary,
+        color = MaterialTheme.colorScheme.secondary,
         modifier = Modifier.padding(start = 8.dp, bottom = 8.dp)
     )
     LazyRow(
@@ -339,7 +377,7 @@ fun MovieSection(navController: NavController) {
     Text(
         text = "Popular Movies",
         style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
-        color = MaterialTheme.colorScheme.primary,
+        color = MaterialTheme.colorScheme.secondary,
         modifier = Modifier.padding(start = 8.dp, bottom = 8.dp)
     )
     LazyRow(
@@ -360,7 +398,7 @@ fun AnimeSection(navController: NavController) {
     Text(
         text = "New Anime",
         style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
-        color = MaterialTheme.colorScheme.primary,
+        color = MaterialTheme.colorScheme.secondary,
         modifier = Modifier.padding(start = 8.dp, bottom = 8.dp)
     )
     LazyRow(
@@ -377,7 +415,7 @@ fun AnimeSection(navController: NavController) {
     Text(
         text = "Popular Anime",
         style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
-        color = MaterialTheme.colorScheme.primary,
+        color = MaterialTheme.colorScheme.secondary,
         modifier = Modifier.padding(start = 8.dp, bottom = 8.dp)
     )
     LazyRow(
