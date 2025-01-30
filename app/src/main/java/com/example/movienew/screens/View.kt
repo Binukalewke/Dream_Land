@@ -98,7 +98,7 @@ fun ViewScreen(
                 Icon(
                     imageVector = if (isBookmarked) Icons.Default.Bookmark else Icons.Default.BookmarkBorder,
                     contentDescription = "Bookmark",
-                    tint = if (isBookmarked) Color(0xFFFFD700) else MaterialTheme.colorScheme.onBackground,
+                    tint = if (isBookmarked) Color(0xFFFFD700) else Color.White,
                     modifier = Modifier.size(36.dp)
                 )
             }
@@ -116,10 +116,10 @@ fun ViewScreen(
         ) {
             Text(
                 text = stringResource(movieTitle),
-                fontSize = 28.sp,
+                fontSize = 32.sp,
                 fontWeight = FontWeight.Bold,
                 style = MaterialTheme.typography.headlineLarge,
-                color = MaterialTheme.colorScheme.primary,
+                color = Blue,
                 textAlign = TextAlign.Start,
             )
 
@@ -168,14 +168,14 @@ fun DescriptionSection(movieDescription: Int) {
         ) {
             Text(
                 text = "Story",
-                style = MaterialTheme.typography.headlineSmall,
+                style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold, fontSize = 26.sp),
                 color = Color(0xFF1A237E),
-                modifier = Modifier.padding(bottom = 8.dp)
+                modifier = Modifier.padding(bottom = 12.dp)
             )
             Text(
                 text = stringResource(movieDescription),
-                style = MaterialTheme.typography.bodyLarge,
-                textAlign = TextAlign.Left,
+                style = MaterialTheme.typography.bodyLarge.copy(fontSize = 18.sp, lineHeight = 26.sp),
+                textAlign = TextAlign.Justify,
                 color = Color(0xFF333333) ,
                 modifier = Modifier.padding(horizontal = 8.dp)
             )
@@ -204,13 +204,13 @@ fun ReviewSection() {
         ) {
             Text(
                 text = "Write a Review",
-                style = MaterialTheme.typography.headlineSmall,
+                style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold, fontSize = 26.sp),
                 color = Color(0xFF1A237E),
                 modifier = Modifier.padding(bottom = 8.dp)
             )
             Button(
                 onClick = { showDialog = true },
-                colors = ButtonDefaults.buttonColors(containerColor = Blue, contentColor = Color.White),
+
                 modifier = Modifier.padding(top = 16.dp),
 
             ) {
