@@ -3,6 +3,8 @@ package com.example.movienew
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -100,6 +102,7 @@ fun AppNavigation() {
 
 
 
+
 @Composable
 fun MainScreen(navController: NavController) {
     var selectedBottomTab by remember { mutableStateOf("Home") }
@@ -112,11 +115,16 @@ fun MainScreen(navController: NavController) {
         }
     ) { paddingValues ->
         Box(modifier = Modifier.padding(paddingValues)) {
-            when (selectedBottomTab) {
-                "Home" -> HomeScreen(navController)
-                "Bookmark" -> BookmarkScreen()
-                "Profile" -> ProfileScreen(navController)
-                "Search" -> SearchScreen()
+            Crossfade(
+                targetState = selectedBottomTab,
+                animationSpec = tween(300)
+            ) { screen ->
+                when (screen) {
+                    "Home" -> HomeScreen(navController)
+                    "Bookmark" -> BookmarkScreen()
+                    "Profile" -> ProfileScreen(navController)
+                    "Search" -> SearchScreen()
+                }
             }
         }
     }
@@ -191,7 +199,7 @@ fun MovieCard(movie: Movie, navController: NavController? = null) {
             },
         elevation = CardDefaults.cardElevation(8.dp),
 
-    ) {
+        ) {
         Column(modifier = Modifier.fillMaxWidth()) {
 
             Image(
@@ -238,6 +246,35 @@ fun MovieCard(movie: Movie, navController: NavController? = null) {
         }
     }
 }
+
+@Composable
+fun NavigationTab(text: String, isSelected: Boolean, onClick: () -> Unit) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .padding(8.dp)
+            .clickable { onClick() }
+    ) {
+        Text(text = text, style = MaterialTheme.typography.bodyLarge,color = if (isSelected) MaterialTheme.colorScheme.primary else Color.Gray)
+        if (isSelected) {
+            Box(
+                modifier = Modifier
+                    .height(3.dp)
+                    .width(40.dp)
+                    .background(Color.Red)
+                    .background(MaterialTheme.colorScheme.primary)
+            )
+        }
+    }
+}
+
+
+
+
+
+
+
+
 
 @Composable
 fun HomeScreen(navController: NavController) {
@@ -329,26 +366,7 @@ fun HomeScreen(navController: NavController) {
     }
 }
 
-@Composable
-fun NavigationTab(text: String, isSelected: Boolean, onClick: () -> Unit) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .padding(8.dp)
-            .clickable { onClick() }
-    ) {
-        Text(text = text, style = MaterialTheme.typography.bodyLarge,color = if (isSelected) MaterialTheme.colorScheme.primary else Color.Gray)
-        if (isSelected) {
-            Box(
-                modifier = Modifier
-                    .height(3.dp)
-                    .width(40.dp)
-                    .background(Color.Red)
-                    .background(MaterialTheme.colorScheme.primary)
-            )
-        }
-    }
-}
+
 
 
 
