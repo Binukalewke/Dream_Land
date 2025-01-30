@@ -18,6 +18,9 @@ import androidx.compose.ui.unit.sp
 import com.example.movienew.data.DataSource
 import com.example.movienew.model.Movie
 import com.example.movienew.R
+import com.example.movienew.ui.theme.Blue
+import com.example.movienew.ui.theme.errorLight
+import com.example.movienew.ui.theme.lightblack
 
 @Composable
 fun BookmarkScreen() {
@@ -30,11 +33,11 @@ fun BookmarkScreen() {
     ) {
 
         Text(
-            text = "Bookmarks",
+            text = "Bookmark",
             fontWeight = FontWeight.Bold,
             fontSize = 28.sp,
             modifier = Modifier.padding(bottom = 16.dp),
-            color = Color(0xFF1E6CE3)
+            color = Blue
         )
 
 
@@ -48,6 +51,7 @@ fun BookmarkScreen() {
                         Text(
                             "No bookmarks yet!",
                             style = MaterialTheme.typography.bodyMedium,
+
                         )
                     }
                 }
@@ -69,7 +73,7 @@ fun BookmarkMovieCard(movie: Movie, onDelete: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color(0xFF1A1A1A), shape = MaterialTheme.shapes.medium)
+            .background(color = lightblack, shape = MaterialTheme.shapes.medium)
             .padding(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -126,7 +130,7 @@ fun BookmarkMovieCard(movie: Movie, onDelete: () -> Unit) {
         AlertDialog(
             onDismissRequest = { Message = false },
             title = { Text(text = "Delete Bookmark") },
-            text = { Text(text = "Do you wish to delete this bookmark?") },
+            text = { Text(text = "Do you wish to delete this bookmark?",color = errorLight) },
             confirmButton = {
                 TextButton(onClick = {
                     onDelete()
