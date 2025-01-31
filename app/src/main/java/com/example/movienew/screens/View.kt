@@ -52,7 +52,7 @@ fun ViewScreen(
 
     // adjust gradient height according to orientation
     val gradientHeight = if (isPortrait) 500.dp else 1100.dp
-    val gradientStartY = if (isPortrait) 200f else 900f
+    val gradientStartY = if (isPortrait) 700f else 900f
 
 
 
