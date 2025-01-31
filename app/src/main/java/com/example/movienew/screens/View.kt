@@ -1,5 +1,6 @@
 package com.example.movienew.screens
 
+import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -17,6 +18,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -43,6 +45,17 @@ fun ViewScreen(
     var isBookmarked by remember { mutableStateOf(false) }
     val backgroundColor = MaterialTheme.colorScheme.background
 
+    // adjust the poster according to orientation
+    val configuration = LocalConfiguration.current
+    val isPortrait = configuration.orientation == Configuration.ORIENTATION_PORTRAIT
+    val posterHeight = if (isPortrait) 500.dp else 1100.dp
+
+    // adjust gradient height according to orientation
+    val gradientHeight = if (isPortrait) 500.dp else 1100.dp
+    val gradientStartY = if (isPortrait) 200f else 900f
+
+
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -57,6 +70,7 @@ fun ViewScreen(
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxWidth()
+                    .height(posterHeight)
                     .height(500.dp)
             )
 
@@ -64,11 +78,11 @@ fun ViewScreen(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(500.dp)
+                    .height(gradientHeight)
                     .background(
                         Brush.verticalGradient(
                             colors = listOf(Color.Transparent, backgroundColor),
-                            startY = 900f
+                            startY = gradientStartY
                         )
                     )
             )
