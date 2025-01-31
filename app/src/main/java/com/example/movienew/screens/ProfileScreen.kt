@@ -85,7 +85,7 @@ fun ProfileScreen(navController: NavController) {
                 .padding(top = 12.dp)
         ) {
             Text(
-                text = "Username",
+                text = "Binuka Lewkebandara",
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onBackground
@@ -147,6 +147,7 @@ fun ProfileScreen(navController: NavController) {
             }
         )
     }
+
 }
 
 @Composable
@@ -221,6 +222,7 @@ fun Edit(onDismiss: () -> Unit) {
                 ) {
                     Text("Save")
                 }
+                Spacer(modifier = Modifier.height(28.dp))
             }
         }
     }
