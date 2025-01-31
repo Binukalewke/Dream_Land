@@ -78,11 +78,16 @@ fun BookmarkMovieCard(movie: Movie, onDelete: () -> Unit) {
 
     // Jiggle Animation
     val rotation by animateFloatAsState(
-        targetValue = if (isJiggling) 10f else 0f, // Jiggle effect on click
-        animationSpec = infiniteRepeatable(
-            animation = tween(100, easing = LinearEasing),
-            repeatMode = RepeatMode.Reverse
-        ), label = ""
+        targetValue = if (isJiggling) 20f else 0f, // Reset animation to 0 when isJiggling is false
+        animationSpec = if (isJiggling) {
+            infiniteRepeatable(
+                animation = tween(90, easing = LinearEasing),
+                repeatMode = RepeatMode.Reverse
+            )
+        } else {
+            tween(90) //  reset to 0
+        },
+        label = ""
     )
 
     Row(
@@ -105,7 +110,7 @@ fun BookmarkMovieCard(movie: Movie, onDelete: () -> Unit) {
         ) {
             Text(
                 text = stringResource(movie.titleResId),
-                style = MaterialTheme.typography.bodyLarge,
+                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                 color = Color.White
             )
             Spacer(modifier = Modifier.height(4.dp))
