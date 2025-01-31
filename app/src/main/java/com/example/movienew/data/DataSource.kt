@@ -7,23 +7,24 @@ class DataSource {
 
     fun loadNewMovies(): List<Movie> {
         return listOf(
+
             Movie(
-                R.string.movie_uglies,
-                R.drawable.movie_poster_1,
-                rating = 8.7,
-                descriptionResId = R.string.desc_uglies
+                R.string.movie_killer_game,
+                R.drawable.movie_poster_3,
+                rating = 8.0,
+                descriptionResId = R.string.desc_killer_game
+            ),
+            Movie(
+                R.string.movie_avengers_endgame,
+                R.drawable.movie_poster_8,
+                rating = 8.4,
+                descriptionResId = R.string.desc_avengers_endgame
             ),
             Movie(
                 R.string.movie_hot_frosty,
                 R.drawable.movie_poster_2,
                 rating = 7.9,
                 descriptionResId = R.string.desc_hot_frosty
-            ),
-            Movie(
-                R.string.movie_killer_game,
-                R.drawable.movie_poster_3,
-                rating = 8.0,
-                descriptionResId = R.string.desc_killer_game
             ),
             Movie(
                 R.string.movie_Sonic_the_Hedgehog_3,
@@ -36,7 +37,9 @@ class DataSource {
                 R.drawable.movie_poster_15,
                 rating = 5.7,
                 descriptionResId = R.string.desc_Sentinel
-            )
+            ),
+
+
         )
     }
 
@@ -67,11 +70,12 @@ class DataSource {
                 descriptionResId = R.string.desc_black_panther
             ),
             Movie(
-                R.string.movie_avengers_endgame,
-                R.drawable.movie_poster_8,
-                rating = 8.4,
-                descriptionResId = R.string.desc_avengers_endgame
+                R.string.movie_uglies,
+                R.drawable.movie_poster_1,
+                rating = 8.7,
+                descriptionResId = R.string.desc_uglies
             )
+
         )
     }
 
