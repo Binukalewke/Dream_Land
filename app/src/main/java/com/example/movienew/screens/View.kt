@@ -277,7 +277,7 @@ fun AddReview(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                Text("Edit Review", style = MaterialTheme.typography.headlineMedium)
+                Text("Review", style = MaterialTheme.typography.headlineMedium)
 
                 Spacer(modifier = Modifier.height(16.dp))
 
