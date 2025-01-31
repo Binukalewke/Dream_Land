@@ -70,6 +70,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+// Navigation
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
@@ -102,7 +103,7 @@ fun AppNavigation() {
 
 
 
-
+// Main Screen
 @Composable
 fun MainScreen(navController: NavController) {
     var selectedBottomTab by remember { mutableStateOf("Home") }
@@ -176,7 +177,7 @@ fun BottomNavItem(
         )
         Text(
             text = label,
-            color = if (isSelected) Blue else Color.Gray
+            color =     if (isSelected) Blue else Color.Gray
         )
     }
 }
@@ -247,35 +248,8 @@ fun MovieCard(movie: Movie, navController: NavController? = null) {
     }
 }
 
-@Composable
-fun NavigationTab(text: String, isSelected: Boolean, onClick: () -> Unit) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .padding(8.dp)
-            .clickable { onClick() }
-    ) {
-        Text(text = text, style = MaterialTheme.typography.bodyLarge,color = if (isSelected) MaterialTheme.colorScheme.primary else Color.Gray)
-        if (isSelected) {
-            Box(
-                modifier = Modifier
-                    .height(3.dp)
-                    .width(40.dp)
-                    .background(Color.Red)
-                    .background(MaterialTheme.colorScheme.primary)
-            )
-        }
-    }
-}
 
-
-
-
-
-
-
-
-
+// Home Screen
 @Composable
 fun HomeScreen(navController: NavController) {
     var selectedTab by remember { mutableStateOf("Movie") }
@@ -288,7 +262,7 @@ fun HomeScreen(navController: NavController) {
     // Change image every 5 seconds
     LaunchedEffect(Unit) {
         while (true) {
-            kotlinx.coroutines.delay(5000L)// 5sec
+            kotlinx.coroutines.delay(3000L)// 3sec
             currentBannerIndex = (currentBannerIndex + 1) % bannerMovies.size
         }
     }
@@ -365,6 +339,29 @@ fun HomeScreen(navController: NavController) {
         }
     }
 }
+
+
+@Composable
+fun NavigationTab(text: String, isSelected: Boolean, onClick: () -> Unit) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .padding(8.dp)
+            .clickable { onClick() }
+    ) {
+        Text(text = text, style = MaterialTheme.typography.bodyLarge,color = if (isSelected) MaterialTheme.colorScheme.primary else Color.Gray)
+        if (isSelected) {
+            Box(
+                modifier = Modifier
+                    .height(3.dp)
+                    .width(40.dp)
+                    .background(Color.Red)
+                    .background(MaterialTheme.colorScheme.primary)
+            )
+        }
+    }
+}
+
 
 
 
